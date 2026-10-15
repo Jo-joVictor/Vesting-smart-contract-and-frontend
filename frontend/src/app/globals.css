@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f7f7f4;
+  --color-ink: #1a1b1a;
+  --color-forest: #212520;
+  --color-lilac: #ece8f8;
+  --color-accent: #6a53d9;
+  --color-accent-dark: #5642c0;
+  --color-rule: #dcdcd5;
+  --color-muted: #6f6f6a;
+  --color-danger: #b3261e;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide number input spinners (used by amount inputs later) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}

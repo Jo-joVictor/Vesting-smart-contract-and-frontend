@@ -1,0 +1,157 @@
+import { parseAbi } from "viem";
+
+const commonErrors = [
+  "error EnforcedPause()",
+  "error ExpectedPause()",
+  "error OwnableUnauthorizedAccount(address account)",
+  "error OwnableInvalidOwner(address owner)",
+  "error ReentrancyGuardReentrantCall()",
+  "error SafeERC20FailedOperation(address token)",
+  "error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed)",
+  "error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed)",
+] as const;
+
+export const tokenAbi = parseAbi([
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+  "function totalSupply() view returns (uint256)",
+  "function TOTAL_SUPPLY() view returns (uint256)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function allowance(address owner, address spender) view returns (uint256)",
+  "function approve(address spender, uint256 value) returns (bool)",
+  "function transfer(address to, uint256 value) returns (bool)",
+  "event Transfer(address indexed from, address indexed to, uint256 value)",
+  "event Approval(address indexed owner, address indexed spender, uint256 value)",
+  ...commonErrors,
+]);
+
+export const presaleAbi = parseAbi([
+  "struct Stage { uint256 allocation; uint256 sold; uint256 priceWei; }",
+
+  // reads
+  "function getStage(uint256 index) view returns (Stage)",
+  "function quote(uint256 ethIn) view returns (uint256 tokensOut, uint256 ethAccepted)",
+  "function startTime() view returns (uint256)",
+  "function endTime() view returns (uint256)",
+  "function softCap() view returns (uint256)",
+  "function hardCap() view returns (uint256)",
+  "function minContribution() view returns (uint256)",
+  "function maxContribution() view returns (uint256)",
+  "function totalAllocation() view returns (uint256)",
+  "function totalRaised() view returns (uint256)",
+  "function totalSold() view returns (uint256)",
+  "function tgeTime() view returns (uint256)",
+  "function finalized() view returns (bool)",
+  "function successful() view returns (bool)",
+  "function paused() view returns (bool)",
+  "function owner() view returns (address)",
+  "function purchased(address) view returns (uint256)",
+  "function contributions(address) view returns (uint256)",
+
+  // writes
+  "function buy(uint256 minTokensOut) payable",
+  "function finalize()",
+  "function claimRefund()",
+  "function withdrawProceeds()",
+  "function pause()",
+  "function unpause()",
+
+  // events
+  "event TokensPurchased(address indexed buyer, uint256 ethAccepted, uint256 tokensReceived)",
+  "event ExcessETHRefunded(address indexed buyer, uint256 amount)",
+  "event SaleFinalized(bool successful, uint256 raised, uint256 tgeTime)",
+  "event Refunded(address indexed buyer, uint256 amount)",
+  "event ProceedsWithdrawn(address indexed recipient, uint256 amount)",
+
+  // errors
+  "error InvalidConfiguration()",
+  "error SaleNotStarted()",
+  "error SaleEnded()",
+  "error BelowMin()",
+  "error WalletLimitReached()",
+  "error Slippage()",
+  "error ZeroTokensOut()",
+  "error NothingToRefund()",
+  "error RefundUnavailable()",
+  "error RefundFailed()",
+  "error SaleNotEnded()",
+  "error AlreadyFinalized()",
+  "error SaleNotSuccessful()",
+  "error NothingToWithdraw()",
+  "error WithdrawFailed()",
+  ...commonErrors,
+]);
+
+export const vestingAbi = parseAbi([
+  "function BPS() view returns (uint256)",
+  "function token() view returns (address)",
+  "function presale() view returns (address)",
+  "function owner() view returns (address)",
+  "function tgeUnlockBps() view returns (uint256)",
+  "function cliffDuration() view returns (uint256)",
+  "function linearDuration() view returns (uint256)",
+  "function allocation() view returns (uint256)",
+  "function totalClaimed() view returns (uint256)",
+  "function claimed(address) view returns (uint256)",
+  "function vested(address buyer) view returns (uint256)",
+  "function claimable(address buyer) view returns (uint256)",
+
+  "function claim()",
+  "function rescueUnsold(address recipient, uint256 amount)",
+
+  "event TokensClaimed(address indexed buyer, uint256 amount)",
+  "event UnsoldRescued(address indexed recipient, uint256 amount)",
+
+  "error InvalidConfiguration()",
+  "error NothingToClaim()",
+  "error SaleNotSuccessful()",
+  "error InsufficientRescuableBalance()",
+  ...commonErrors,
+]);
+
+export const stakingAbi = parseAbi([
+  "function PRECISION() view returns (uint256)",
+  "function BPS() view returns (uint256)",
+  "function YEAR() view returns (uint256)",
+  "function stakingToken() view returns (address)",
+  "function rewardsDuration() view returns (uint256)",
+  "function totalStaked() view returns (uint256)",
+  "function rewardRate() view returns (uint256)",
+  "function periodFinish() view returns (uint256)",
+  "function lastUpdateTime() view returns (uint256)",
+  "function rewardPerTokenStored() view returns (uint256)",
+  "function totalRewardsPaid() view returns (uint256)",
+  "function totalRewardsCommitted() view returns (uint256)",
+  "function paused() view returns (bool)",
+  "function owner() view returns (address)",
+  "function balances(address) view returns (uint256)",
+  "function rewards(address) view returns (uint256)",
+  "function userRewardPerTokenPaid(address) view returns (uint256)",
+  "function lastTimeRewardApplicable() view returns (uint256)",
+  "function rewardPerToken() view returns (uint256)",
+  "function earned(address account) view returns (uint256)",
+  "function aprBps() view returns (uint256)",
+
+  "function stake(uint256 amount)",
+  "function withdraw(uint256 amount)",
+  "function getReward()",
+  "function exit()",
+  "function notifyRewardAmount(uint256 amount)",
+  "function pause()",
+  "function unpause()",
+
+  "event Staked(address indexed user, uint256 amount)",
+  "event Withdrawn(address indexed user, uint256 amount)",
+  "event RewardPaid(address indexed user, uint256 amount)",
+  "event RewardAdded(uint256 amount, uint256 rewardRate, uint256 periodFinish)",
+
+  "error InvalidConfiguration()",
+  "error ZeroAmount()",
+  "error InsufficientStake()",
+  "error NoReward()",
+  "error RewardTooSmall()",
+  "error InsufficientRewardBalance()",
+  "error RewardPeriodActive()",
+  ...commonErrors,
+]);
