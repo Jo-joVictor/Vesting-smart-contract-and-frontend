@@ -135,16 +135,7 @@ export function VestingView() {
           <Eyebrow className="hidden md:block">Live from the vesting contract</Eyebrow>
         </div>
 
-        {phase === "loading" && <p className="text-muted">Reading the vesting contract…</p>}
-        {phase === "pending" && (
-          <p className="max-w-xl text-2xl tracking-tight">
-            Vesting starts after the presale is finalized. Your allocation will appear here.
-          </p>
-        )}
-        {phase === "failed" && (
-          <p className="max-w-xl text-2xl tracking-tight">No vesting: the presale was unsuccessful.</p>
-        )}
-        {phase === "active" && <ClaimPanel d={d} />}
+        <ClaimPanel d={d} />
 
         <div className="mt-10 grid gap-6 border-t border-accent/40 pt-6 sm:grid-cols-2">
           <div>
